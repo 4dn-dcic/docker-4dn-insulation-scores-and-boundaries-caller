@@ -72,11 +72,11 @@ outputs:
   bedfile1:
     type: File
     outputBinding:
-      glob: "$(inputs.outdir + '/*' + inputs.boundaries_cutoff_1 + '.bed.beddb')"
+      glob: "$(inputs.outdir + '/*' + inputs.boundaries_cutoff_1 + '.bed')"
 
   bedfile2:
     type: File
     outputBinding:
-      glob: "$(inputs.outdir + '/*' + inputs.boundaries_cutoff_2 + '.bed.beddb')"
+      glob: "$(inputs.outdir + '/*' + inputs.boundaries_cutoff_2 + '.bed')"
 
 baseCommand: ["run-insulation-score-and-boundaries-caller.sh"]
