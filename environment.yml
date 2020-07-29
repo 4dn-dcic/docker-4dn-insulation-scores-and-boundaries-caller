@@ -1,0 +1,23 @@
+channels:
+  - conda-forge
+  - defaults
+  - bioconda
+dependencies:
+  - click==7.1.2
+  - cooler==0.8.9
+  - cython
+  - cytoolz
+  - joblib
+  - matplotlib
+  - multiprocess
+  - numba
+  - numpy
+  - pandas==1.0.3
+  - scikit-learn
+  - scipy
+  - ucsc-bedgraphtobigwig
+  - pip:
+      - cooltools==0.3.2
+      - bioframe==0.0.12
+      - tables
+      - clodius==0.14.3
