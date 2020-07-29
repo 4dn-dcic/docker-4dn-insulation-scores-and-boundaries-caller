@@ -1,0 +1,39 @@
+sudo: required
+language: c python
+python: 3.6
+os: linux
+services:
+  - docker
+
+env:
+  - LOCAL_NAME=4dn-insulation-score-and-boundaries-caller REMOTE_NAME=4dndcic/4dn-insulation-score-and-boundaries-caller
+
+install:
+  - docker build -t $LOCAL_NAME .
+  - sudo pip install schema_salad
+  - sudo pip install cwltool==1.0.20181201184214
+
+before_script:
+  - if [ "$TRAVIS_PULL_REQUEST" != false ]; then
+       docker tag $LOCAL_NAME $REMOTE_NAME:$TRAVIS_PULL_REQUEST_BRANCH;
+    else
+       docker tag $LOCAL_NAME $REMOTE_NAME:$TRAVIS_BRANCH;
+    fi;
+  - chmod +x tests/tests_cwl.sh
+
+script:
+  - tests/tests_cwl.sh insulator-score-caller
+
+after_success:
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    if [ "$TRAVIS_BRANCH" == "master" ]; then
+      if [ "$TRAVIS_PULL_REQUEST" != false ]; then
+        docker tag $LOCAL_NAME $REMOTE_NAME:$TRAVIS_PULL_REQUEST_BRANCH;
+        docker push $REMOTE_NAME:$TRAVIS_PULL_REQUEST_BRANCH;
+      else
+        docker tag $LOCAL_NAME $REMOTE_NAME:latest;
+        docker push $REMOTE_NAME:latest;
+      fi
+    fi
+  - echo 'good'
+  - date
