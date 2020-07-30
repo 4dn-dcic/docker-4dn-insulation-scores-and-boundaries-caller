@@ -6,7 +6,7 @@ cwlVersion: v1.0
 
 requirements:
 - class: DockerRequirement
-  dockerPull: "4dndcic/4dn-insulation-score-and-boundaries-caller:v1"
+  dockerPull: "4dndcic/4dn-insulation-scores-and-boundaries-caller:v1"
 
 - class: "InlineJavascriptRequirement"
 
@@ -79,4 +79,4 @@ outputs:
     outputBinding:
       glob: "$(inputs.outdir + '/*' + inputs.boundaries_cutoff_2 + '.bed')"
 
-baseCommand: ["run-insulation-score-and-boundaries-caller.sh"]
+baseCommand: ["run-insulation-scores-and-boundaries-caller.sh"]
