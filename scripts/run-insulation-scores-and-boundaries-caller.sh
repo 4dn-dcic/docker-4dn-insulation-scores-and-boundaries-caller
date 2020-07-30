@@ -20,3 +20,8 @@ then
 fi
 
 python /usr/local/bin/get_insulation_scores_and_boundaries.py  --binsize $BINSIZE --window $WINDOWSIZE --cutoff $CUTOFF --pixels_frac $PIXELS_FRAC  $INPUT $OUTDIR $FILE_NAME $BOUNDARIES_CUTOFF_1 $BOUNDARIES_CUTOFF_2
+
+for eachfile in $OUTDIR/*.bed
+do
+  gzip $eachfile
+done
