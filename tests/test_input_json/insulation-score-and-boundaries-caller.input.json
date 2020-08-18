@@ -3,10 +3,6 @@
        "class": "File",
        "path": "../test_files/test.multires.cool"
    },
-   "chromsizes": {
-       "class": "File",
-       "path": "../test_files/4DNFI823LSII.chrom.sizes"
-   },
    "binsize": 100000,
    "windowsize": 1000000
 }

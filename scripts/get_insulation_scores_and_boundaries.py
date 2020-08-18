@@ -5,18 +5,20 @@ import bioframe
 import click
 import sys
 import pandas as pd
+import numpy as np
 
 
 @click.command()
 @click.argument('mcoolfile')
 @click.argument('outdir')
 @click.argument('filename')
-@click.argument('boundaries_cutoff', nargs=-1, type=float)
-@click.option('--binsize', default=-1, help='')
-@click.option('--window', default=100000, help='')
-@click.option('--cutoff', default=2, help='')
-@click.option('--pixels_frac', default=0.66, help='')
-def main(mcoolfile, outdir, filename, boundaries_cutoff, binsize, window, cutoff, pixels_frac):
+@click.option('--binsize', default=-1)
+@click.option('--window', default=100000)
+@click.option('--bweak', default=0.2)
+@click.option('--bstrong', default=0.5)
+@click.option('--cutoff', default=2)
+@click.option('--pixels_frac', default=0.66)
+def main(mcoolfile, outdir, filename, binsize, window, bweak, bstrong, cutoff, pixels_frac):
     f = mcoolfile
 
     # Get the list of resolutions in the mcool file
@@ -79,12 +81,14 @@ def main(mcoolfile, outdir, filename, boundaries_cutoff, binsize, window, cutoff
     bioframe.to_bigwig(ins_table_filtered, chromsizes,
                        f'{outdir}/{filename}.bw',
                        f'log2_insulation_score_{window}')
-    # Filter boundaries abover thresholds
-    columns = ['chrom', 'start', 'end', f'boundary_strength_{window}']
 
-    for bcutoff in boundaries_cutoff:
-        boun_table = ins_table_filtered[ins_table_filtered[f'boundary_strength_{window}'] >= bcutoff]
-        boun_table.to_csv(f'{outdir}/{filename}_boundaries_{bcutoff}.bed', sep='\t', header=None, index=False, columns=columns)
+    # Classify the boundaries as strong and week
+    # strong boundaries >= 0.5,  weak 0.2>= and < 0.5
+    boun_table = ins_table_filtered[ins_table_filtered[f'boundary_strength_{window}'] >= bweak].copy()
+    boun_table['boundary_classification'] = np.where(boun_table[f'boundary_strength_{window}'] >= bstrong, 'Strong', 'Weak')
+    # Filter boundaries abover thresholds
+    columns = ['chrom', 'start', 'end', 'boundary_classification', f'boundary_strength_{window}']
+    boun_table.to_csv(f'{outdir}/{filename}_boundaries.bed', sep='\t', header=None, index=False, columns=columns)
 
 
 if __name__ == "__main__":

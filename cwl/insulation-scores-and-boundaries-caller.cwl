@@ -22,45 +22,40 @@ inputs:
       position: 2
     default: "."
 
-  chromsizes:
-    type: File
-    inputBinding:
-      position: 3
-
-  boundaries_cutoff_1:
-    type: float
-    inputBinding:
-      position: 4
-    default: 0.2
-
-  boundaries_cutoff_2:
-    type: float
-    inputBinding:
-      position: 5
-    default: 0.5
-
   binsize:
     type: int
     inputBinding:
-      position: 6
+      position: 3
     default: 5000
 
   windowsize:
     type: int
     inputBinding:
-      position: 7
+      position: 4
     default: 100000
+
+  boundaries_weak:
+    type: float
+    inputBinding:
+      position: 5
+    default: 0.2
+
+  boundaries_strong:
+    type: float
+    inputBinding:
+      position: 6
+    default: 0.5
 
   cutoff:
     type: int
     inputBinding:
-      position: 8
+      position: 7
     default: 2
 
   pixels_frac:
     type: float
     inputBinding:
-      position: 9
+      position: 8
     default: 0.66
 
 outputs:
@@ -69,14 +64,9 @@ outputs:
     outputBinding:
       glob: "$(inputs.outdir + '/' + '*.bw')"
 
-  bedfile1:
+  bedfile:
     type: File
     outputBinding:
-      glob: "$(inputs.outdir + '/*' + inputs.boundaries_cutoff_1 + '.bed.gz')"
-
-  bedfile2:
-    type: File
-    outputBinding:
-      glob: "$(inputs.outdir + '/*' + inputs.boundaries_cutoff_2 + '.bed.gz')"
+      glob: "$(inputs.outdir + '/' +'*.bed.gz')"
 
 baseCommand: ["run-insulation-scores-and-boundaries-caller.sh"]
