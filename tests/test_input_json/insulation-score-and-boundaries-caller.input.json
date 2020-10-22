@@ -1,0 +1,8 @@
+{
+   "mcoolfile": {
+       "class": "File",
+       "path": "../test_files/test.multires.cool"
+   },
+   "binsize": 100000,
+   "windowsize": 1000000
+}
