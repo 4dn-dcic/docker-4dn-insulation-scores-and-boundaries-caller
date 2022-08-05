@@ -58,7 +58,8 @@ docker run 4dndcic/4dn-insulation-scores-and-boundaries-caller
 # specific run command
 docker run 4dndcic/4dn-insulation-scores-and-boundaries-caller <run-xx.sh> <arg1> <arg2> ...
 
-# may need -v option to mount data file/folder if they are used as arguments.
+# may likely need -v option to mount data file/folder if they are used as arguments.
+# here /data1/ and /data2/ are the local folders and /d1/ and /d2/ are in the Docker container
 docker run -v /data1/:/d1/:rw -v /data2/:/d2/:rw 4dndcic/4dn-insulation-scores-and-boundaries-caller <run-xx.sh> /d1/file1 /d2/file2 ...
 ```
 
@@ -69,15 +70,21 @@ and outputs them in bigwig and bed format respectively.
 * Output: a bigwig file with insulation scores and a bed file with boundaries
 
 #### Usage
-Runs the following in the container
+Run the following in the container (including ALL fields):
 ```
-run-insulation-scores-and-boundaries-callerr.sh <mcoolfile> <outdir> <filename> --binsize --windowsize --bweak --bstrong --cutoff --pixels_frac
-# mcool file: input mcool
+run-insulation-scores-and-boundaries-caller.sh <mcoolfile> <outdir> <binsize> <windowsize> <bweak> <bstrong> <cutoff> <pixels_frac>
+# mcoolfile: input mcool
 # outdir: output directory
-# binsize: the size of the bins
-# windowsize: the size of the sliding diamond window
-# bweak: the threshold for defining weak boundaries
-# bstrong: the threshold for defining strong boundaries
-# cutoff: minimal distance allowed to a bad bin. Do not calculate insulation scores for bad bins closer to that distance
-# pixels_frac: The minimal fraction of valid pixels in a diamond to be used in boundary picking and prominence calculation
+# binsize: the size of the bins (e.g. 5000)
+# windowsize: the size of the sliding diamond window (e.g. 10000)
+# bweak: the threshold for defining weak boundaries (e.g. 0.2)
+# bstrong: the threshold for defining strong boundaries (e.g. 0.5)
+# cutoff: minimal distance allowed to a bad bin. Do not calculate insulation scores for bad bins closer to that distance (e.g. 2)
+# pixels_frac: The minimal fraction of valid pixels in a diamond to be used in boundary picking and prominence calculation (e.g. .66)
+```
+To run the Python script directly, make sure that the output directory has been created. Note that the output will not be gzipped using this script:
+```
+get_insulation_scores_and_boundaries.py INPUT OUTDIR FILENAME --binsize BINSIZE --windowsize WINDOWSIZE --bweak BWEAK --bstrong BSTRONG --cutoff CUTOFF --pixels_frac PIXELS_FRAC
+# FILENAME: name for output file
+# All flags are optional
 ```
